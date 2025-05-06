@@ -1,0 +1,1 @@
+export const API_URL = 'https://api.autogatekek-qadev.devnstg.com/api/v1'; // Replace with your actual API URL

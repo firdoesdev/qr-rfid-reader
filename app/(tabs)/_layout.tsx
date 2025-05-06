@@ -14,7 +14,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: '#fff',
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
@@ -48,10 +49,11 @@ export default function TabLayout() {
        <Tabs.Screen
         name="rfid"
         options={{
-          title: "RFID",
+          title: "rfid",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="scanner" color={color} />
           ),
+          
         }}
       />
      
