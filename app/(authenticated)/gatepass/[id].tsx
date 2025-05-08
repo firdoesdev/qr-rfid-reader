@@ -5,6 +5,8 @@ import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
 import { useLocalSearchParams } from "expo-router";
 import { useDetailCompanyEmployee } from "@/hooks/features/gatepass/useDetailGatePass";
+import {useUpdateGatepassNumber} from "@/hooks/features/gatepass/useUpdateGatepassNumber";
+// import {useMqtt} from '@/hooks/useMqtt';
 
 export default function asyncTabTwoScreen() {
   const [isReading, setIsReading] = useState(false);
@@ -13,7 +15,8 @@ export default function asyncTabTwoScreen() {
   const [tagId, setTagId] = useState<string | undefined>();
   const { id } = useLocalSearchParams();
   const { data:employeeData } = useDetailCompanyEmployee({id: id as string, enabled: !!id});
-  console.log("ID from params:", id);
+  // console.log("ID from params:", id);
+  const { connected, updateGatepassNumber } = useUpdateGatepassNumber({ id: id as string });
 
   useEffect(() => {
     const checkIsSupported = async () => {
@@ -42,10 +45,12 @@ export default function asyncTabTwoScreen() {
       // and the promise will be resolved with the tag object
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
+
       console.warn("Tag found", tag?.id);
+      updateGatepassNumber(tag?.id as string)
       setTagId(tag?.id);
     } catch (ex) {
-      console.warn("Oops!", ex);
+      console.warn("Oops!", JSON.stringify(ex));
       setIsReading(false);
     } finally {
       // stop the nfc scanning
@@ -69,6 +74,7 @@ export default function asyncTabTwoScreen() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>{connected ? 'Connected' : 'Disconnected'}</Text>
       <View>
         {employeeData ?(
           <View style={styles.employeeCard}>

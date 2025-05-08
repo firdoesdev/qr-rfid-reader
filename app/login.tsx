@@ -8,7 +8,7 @@ import {
   TextInput,
   Button,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -16,12 +16,14 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useLogin } from "@/hooks/features/useLogin";
 import useAuth from "@/hooks/features/useAuth";
+import { useRouter } from "expo-router";
 // import { View } from 'react-native-reanimated/lib/typescript/Animated';
 export default function HomeScreen() {
   const { loginAsync, isLoading, data } = useLogin();
-  const { isAuthenticated,user,logout, refreshAuth } = useAuth();
+  const { isAuthenticated, user, logout, refreshAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleLogin = async () => {
     const credentials = {
@@ -31,31 +33,17 @@ export default function HomeScreen() {
     try {
       await loginAsync(credentials);
       refreshAuth();
-      
+      router.push("/(authenticated)");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
-  if (isAuthenticated) {
-    console.log("User is authenticated:", user?.email);
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Welcome back!</Text>
-        <Text style={styles.title}>{user?.email}</Text>
-        <Button
-          title="Logout"
-          onPress={async () => {
-            await logout();
-          }}
-        />
-      </SafeAreaView>
-    );
-  }
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Hello World</Text>
+      <Text style={styles.title}>Hello Login</Text>
       <Text>Email:</Text>
       <TextInput
         placeholder="Enter your email"

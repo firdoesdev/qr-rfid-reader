@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,7 +20,7 @@ import useGatePass from "@/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
 
 const ListGatePass = () => {
-  const { employees, loading, error } = useGatePass();
+  const { employees, loading, error, refresh } = useGatePass();
   return (
     <View style={styles.container}>
       <Text style={{ marginBottom: 10 }}>List Gatepass</Text>
@@ -27,9 +28,9 @@ const ListGatePass = () => {
       {error && <Text>Error: {error}</Text>}
 
       {employees.length > 0 ? (
-        <ScrollView style={{ flexGrow: 1 }}>
+        <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />} >
           {employees.map((employee) => (
-            <Link href={`/rfid/${employee.id}`} key={employee.id} style={{ flex: 1, marginBottom: 10 }}>
+            <Link href={`/(authenticated)/gatepass/${employee.id}`} key={employee.id} style={{ flex: 1, marginBottom: 10 }}>
               <View style={styles.employeeCard}>
                 <Text style={styles.employeeName}>{employee.name}</Text>
                 <Text style={styles.employeeDetail}>{employee.email}</Text>
@@ -73,8 +74,7 @@ export default ListGatePass;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
+    
     padding: 20,
     backgroundColor: "#f5f5f5",
     gap: 16,

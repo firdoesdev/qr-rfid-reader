@@ -85,9 +85,10 @@ const useGatePass = () => {
         isFetchingNextPage,
         refetch
     } = useInfiniteQuery({
-        queryKey: ['companyEmployees', params],
+        queryKey: ['company-employees', params],
         queryFn: fetchEmployees,
         initialPageParam: 1,
+        // refetchInterval: 5000,
         getNextPageParam: (lastPage) => {
             const { page, total_page } = lastPage.data.meta;
             return page < total_page ? page + 1 : undefined;

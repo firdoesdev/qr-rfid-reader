@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_URL} from '@/constants/Endpoint'
+import {API_URL} from '@/constants/Configs'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Create axios instance with base configuration

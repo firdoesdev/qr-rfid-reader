@@ -40,7 +40,6 @@ export const useDetailCompanyEmployee = ({ id, enabled = !!id }: UseDetailCompan
         queryFn: async () => {
             if (!id) throw new Error('Company employee ID is required');
             const response = await axios.get<ApiResponse>(`/company-employees/${id}`);
-            console.log('Response:', response.data);
             return response.data;
         },
         enabled,
