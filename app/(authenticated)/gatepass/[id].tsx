@@ -16,7 +16,7 @@ export default function asyncTabTwoScreen() {
   const { id } = useLocalSearchParams();
   const { data:employeeData } = useDetailCompanyEmployee({id: id as string, enabled: !!id});
   // console.log("ID from params:", id);
-  const { connected, updateGatepassNumber } = useUpdateGatepassNumber({ id: id as string });
+  const { status, updateGatepassNumber} = useUpdateGatepassNumber({ id: id as string });
 
   useEffect(() => {
     const checkIsSupported = async () => {
@@ -74,7 +74,8 @@ export default function asyncTabTwoScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{connected ? 'Connected' : 'Disconnected'}</Text>
+      <Text style={styles.title}>{status.connected ? 'Connected' : 'Disconnected'}</Text>
+      
       <View>
         {employeeData ?(
           <View style={styles.employeeCard}>
@@ -109,6 +110,12 @@ export default function asyncTabTwoScreen() {
                 {hasNfc ? "NFC is supported" : "NFC is not supported"}
               </Text>
               <Text style={styles.errorText}>{JSON.stringify(errors)}</Text>
+            </View>
+          )}
+          <Text>{status.errors ? `Errors: ${JSON.stringify(status.errors)}` : ''}</Text>
+          {status.errors && (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>{`Errors: ${JSON.stringify(status.errors)}`}</Text>
             </View>
           )}
         </>

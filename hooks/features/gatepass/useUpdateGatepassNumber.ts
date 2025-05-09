@@ -7,7 +7,7 @@ interface IUpdateGatepassNumber {
 
 export const useUpdateGatepassNumber = (data: IUpdateGatepassNumber) => {
   const { id } = data;
-  const { publish, connected } = useMqtt();
+  const { publish, status } = useMqtt();
   const queryClient = useQueryClient();
 
   const topics = "autogate/gatepass/update-number";
@@ -46,6 +46,6 @@ export const useUpdateGatepassNumber = (data: IUpdateGatepassNumber) => {
     console.log("Payload sent to MQTT broker");
   };
 
-  console.log("Connected to MQTT broker:", connected);
-  return { updateGatepassNumber, connected };
+  
+  return { updateGatepassNumber, status };
 };

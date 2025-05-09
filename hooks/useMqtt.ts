@@ -8,7 +8,16 @@ type MessageHandler = (topic: string, message: string) => void;
 export const useMqtt = () => {
   const client = useRef<Client | null>(null);
   const messageHandlers = useRef<Map<string, MessageHandler[]>>(new Map());
-  const [connected, setConnected] = useState(false);
+  const [status, setStatus] = useState<{
+    connected: boolean;
+    errors: unknown | null;
+    loading?: boolean;
+  }>({
+    connected: false,
+    errors: null,
+    loading: false,
+  });
+
   
   useEffect(() => {
     mqttClient.onConnectionLost = (response) => {
@@ -32,15 +41,25 @@ export const useMqtt = () => {
     };
 
     mqttClient.connect({
+      
+      
       onSuccess: () => {
         console.log("MQTT: Connected ✅");
-        setConnected(true);
+        setStatus({
+          connected: true,
+          errors: null,
+          loading: false,
+        });
       },
       onFailure: (err) => {
         console.log("MQTT: Connection failed ❌", err);
-        setConnected(false);
+        setStatus({
+          connected: false,
+          errors: err,
+          loading: false,
+        });
       },
-      useSSL: false,
+      useSSL: true,
       cleanSession: true,
       reconnect: true,
       timeout: 5,
@@ -115,15 +134,10 @@ export const useMqtt = () => {
     return true;
   }, []);
   
-  // Check if connected
-  // const isConnected = useCallback(() => {
-  //   return client.current?.isConnected() || false;
-  // }, []);
-  
   return {
     subscribe,
     unsubscribe,
     publish,
-    connected
+    status,
   };
 };
