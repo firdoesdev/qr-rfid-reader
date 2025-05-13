@@ -30,14 +30,18 @@ const ListGatePass = () => {
       {employees.length > 0 ? (
         <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />} >
           {employees.map((employee) => (
-            <Link href={`/(authenticated)/gatepass/${employee.id}`} key={employee.id} style={{ flex: 1, marginBottom: 10 }}>
+            // <Link href={`/(authenticated)/gatepass/${employee.id}`} key={employee.id} style={{ flex: 1, marginBottom: 10 }}>
+            <Link href={{
+              pathname:'/(authenticated)/gatepass/[id]',
+              params: { id: employee.id },
+            }} key={employee.id} style={{ flex: 1, marginBottom: 10 }} >
               <View style={styles.employeeCard}>
                 <Text style={styles.employeeName}>{employee.name}</Text>
                 <Text style={styles.employeeDetail}>{employee.email}</Text>
                 <View style={styles.employeeInfoRow}>
                   <Text style={styles.employeeLabel}>Gate Pass:</Text>
                   <Text style={styles.employeeValue}>
-                    {employee.gatepass_number}
+                    {employee.gatepass_number} - {employee.id}
                   </Text>
                 </View>
                 <View style={styles.employeeInfoRow}>

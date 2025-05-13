@@ -8,7 +8,7 @@ import { useDetailCompanyEmployee } from "@/hooks/features/gatepass/useDetailGat
 import {useUpdateGatepassNumber} from "@/hooks/features/gatepass/useUpdateGatepassNumber";
 // import {useMqtt} from '@/hooks/useMqtt';
 
-export default function asyncTabTwoScreen() {
+const DetailGatepass = () =>{
   const [isReading, setIsReading] = useState(false);
   const [errors, setErrors] = useState<unknown | null>(null);
   const [hasNfc, setHasNFC] = useState(false);
@@ -123,6 +123,9 @@ export default function asyncTabTwoScreen() {
     </View>
   );
 }
+
+export default DetailGatepass;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

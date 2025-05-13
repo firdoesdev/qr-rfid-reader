@@ -1,16 +1,9 @@
-// export const API_URL = 'https://api.autogatekek-qadev.devnstg.com/api/v1'; // Replace with your actual API URL
+export const APP_ENV = process.env.EXPO_PUBLIC_APP_ENV;
 export const API_URL = 'https://api.autogatekek-qa.devnstg.com/api/v1'; // Replace with your actual API URL
 
+export const MQTT_URL = process.env.EXPO_PUBLIC_MQTT_URL;
+export const MQTT_PORT = process.env.EXPO_PUBLIC_MQTT_PORT;
 
-// DEV
-// export const MQTT_URL = "broker.emqx.io";
-// export const MQTT_PORT = 8083;
-// export const MQTT_CLIENT_ID = `backend-mqtt-client-rahasia123!-${Date.now()}-${Math.random()
-//   .toString(36)
-//   .substring(2, 7)}`;
-export const MQTT_URL = "broker.emqx.io";
-// export const MQTT_PORT = 8083; 
-export const MQTT_PORT = 8084; // Use 8084 for secure connections
-export const MQTT_CLIENT_ID = `backend-mqtt-client-staging-${Date.now()}-${Math.random()
+export const MQTT_CLIENT_ID = `${process.env.EXPO_PUBLIC_MQTT_CLIENT_ID}-${Date.now()}-${Math.random()
   .toString(36)
   .substring(2, 7)}`;
