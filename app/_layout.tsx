@@ -12,6 +12,8 @@ import "react-native-reanimated";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { Buffer } from 'buffer';
+global.Buffer = Buffer;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

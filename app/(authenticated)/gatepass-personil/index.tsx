@@ -1,56 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-  Button,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import NfcManager, { NfcTech, NfcEvents } from "react-native-nfc-manager";
 import useGatePass from "@/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
 
 const ListGatePass = () => {
   const { employees, loading, error, refresh } = useGatePass();
   return (
-    <View style={styles.container}>
-      <Text style={{ marginBottom: 10 }}>List Gatepass</Text>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text style={styles.title}>Gate Pass List</Text>
+      </View>
       {loading && <Text>Loading...</Text>}
       {error && <Text>Error: {error}</Text>}
 
-      {employees.length > 0 ? (
-        <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />} >
+      {employees.length > 0 && (
+        <ScrollView
+          style={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={refresh} />
+          }
+        >
           {employees.map((employee) => (
-            // <Link href={`/(authenticated)/gatepass/${employee.id}`} key={employee.id} style={{ flex: 1, marginBottom: 10 }}>
-            <Link href={{
-              pathname:'/(authenticated)/gatepass/[id]',
-              params: { id: employee.id },
-            }} key={employee.id} style={{ flex: 1, marginBottom: 10 }} >
+            <Link
+              href={{
+                pathname: "/(authenticated)/gatepass-personil/[id]",
+                params: { id: employee.id },
+              }}
+              key={employee.id}
+              style={{ flex: 1, marginBottom: 10 }}
+            >
               <View style={styles.employeeCard}>
-                <Text style={styles.employeeName}>{employee.name}</Text>
-                <Text style={styles.employeeDetail}>{employee.email}</Text>
-                <View style={styles.employeeInfoRow}>
-                  <Text style={styles.employeeLabel}>Gate Pass:</Text>
-                  <Text style={styles.employeeValue}>
-                    {employee.gatepass_number} - {employee.id}
-                  </Text>
-                </View>
-                <View style={styles.employeeInfoRow}>
-                  <Text style={styles.employeeLabel}>Valid:</Text>
-                  <Text style={styles.employeeValue}>
-                    {employee.valid_start_at} - {employee.valid_end_at}
-                  </Text>
-                </View>
-                <View style={styles.badgeContainer}>
+                <View
+                  style={styles.headerSection}
+                >
+                  <Text style={styles.employeeName}>{employee.name}</Text>
                   <Text
                     style={[
                       styles.badge,
@@ -62,14 +54,27 @@ const ListGatePass = () => {
                     {employee.is_permanent ? "Permanent" : "Temporary"}
                   </Text>
                 </View>
+                <Text style={styles.employeeDetail}>{employee.email}</Text>
+                <View style={styles.employeeInfoRow}>
+                  <Text style={styles.employeeLabel}>Gate Pass:</Text>
+                  <Text style={styles.employeeValue}>
+                    {employee.gatepass_number}
+                  </Text>
+                </View>
+                <View style={styles.employeeInfoRow}>
+                  <Text style={styles.employeeLabel}>Valid:</Text>
+                  <Text style={styles.employeeValue}>
+                    {employee.valid_start_at}{" "}
+                    {employee.valid_end_at ? `- ` + employee.valid_end_at : ""}
+                  </Text>
+                </View>
               </View>
             </Link>
           ))}
         </ScrollView>
-      ) : (
-        <Text>No employees found.</Text>
       )}
-    </View>
+      {employees.length === 0 && !loading && <Text>No employees found.</Text>}
+    </SafeAreaView>
   );
 };
 
@@ -78,15 +83,19 @@ export default ListGatePass;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
-    padding: 20,
+    padding: 12,
     backgroundColor: "#f5f5f5",
     gap: 16,
+  },
+  headerSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   employeeCard: {
     width: "100%",
     backgroundColor: "#ffffff",
-    padding: 20,
+    padding: 12,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -120,6 +129,8 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flexDirection: "row",
     marginTop: 10,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   badge: {
     paddingHorizontal: 10,

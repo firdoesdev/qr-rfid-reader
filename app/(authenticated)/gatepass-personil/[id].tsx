@@ -5,18 +5,25 @@ import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
 import { useLocalSearchParams } from "expo-router";
 import { useDetailCompanyEmployee } from "@/hooks/features/gatepass/useDetailGatePass";
-import {useUpdateGatepassNumber} from "@/hooks/features/gatepass/useUpdateGatepassNumber";
+import { useUpdateGatepassNumber } from "@/hooks/features/gatepass/useUpdateGatepassNumber";
 // import {useMqtt} from '@/hooks/useMqtt';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ban, Check } from "lucide-react-native";
 
-const DetailGatepass = () =>{
+const DetailGatepass = () => {
   const [isReading, setIsReading] = useState(false);
   const [errors, setErrors] = useState<unknown | null>(null);
   const [hasNfc, setHasNFC] = useState(false);
   const [tagId, setTagId] = useState<string | undefined>();
   const { id } = useLocalSearchParams();
-  const { data:employeeData } = useDetailCompanyEmployee({id: id as string, enabled: !!id});
+  const { data: employeeData } = useDetailCompanyEmployee({
+    id: id as string,
+    enabled: !!id,
+  });
   // console.log("ID from params:", id);
-  const { status, updateGatepassNumber} = useUpdateGatepassNumber({ id: id as string });
+  const { status, updateGatepassNumber } = useUpdateGatepassNumber({
+    id: id as string,
+  });
 
   useEffect(() => {
     const checkIsSupported = async () => {
@@ -45,9 +52,9 @@ const DetailGatepass = () =>{
       // and the promise will be resolved with the tag object
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
-
+      console.log("tag data", tag);
       console.warn("Tag found", tag?.id);
-      updateGatepassNumber(tag?.id as string)
+      updateGatepassNumber(tag?.id as string);
       setTagId(tag?.id);
     } catch (ex) {
       console.warn("Oops!", JSON.stringify(ex));
@@ -73,32 +80,65 @@ const DetailGatepass = () =>{
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{status.connected ? 'Connected' : 'Disconnected'}</Text>
-      
-      <View>
-        {employeeData ?(
-          <View style={styles.employeeCard}>
-            
-            <Text style={styles.employeeName}>{employeeData.data.name}</Text>
-            <Text style={styles.employeeDetail}>NIP: {employeeData.data.nip}</Text>
-            <Text style={styles.employeeDetail}>Email: {employeeData.data.email}</Text>
-            <Text style={styles.employeeDetail}>Status: {employeeData.data.status}</Text>
-            <Text style={styles.employeeDetail}>GatePass Number: {employeeData.data.gatepass_number}</Text>
-          </View>
-        ) : (
-          <Text>Loading employee data...</Text>)}
-
+    <SafeAreaView style={styles.container}>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+        <View
+          style={[
+            styles.statusIndicator,
+            { backgroundColor: status.connected ? "#4CAF50" : "#F44336" },
+          ]}
+        />
+      </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Update Nomor Gatepass Personil</Text>
       </View>
       <View>
-        {tagId && (
+        {employeeData ? (
+          <View style={styles.employeeCard}>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.employeeName}>
+                  {employeeData.data.name}
+                </Text>
+                {employeeData.data.status ? (
+                  <Check color="#4CAF50" />
+                ) : (
+                  <Ban color="#F44336" />
+                )}
+              </View>
+              <Text style={styles.employeeDetail}>{employeeData.data.nip}</Text>
+            </View>
+
+            {isReading ? (
+              <Text>Scanning...</Text>
+            ) : (
+              <Text style={styles.employeeDetail}>
+                No. Gatepass:{" "}
+                <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+                  {employeeData.data.gatepass_number}
+                </Text>
+              </Text>
+            )}
+          </View>
+        ) : (
+          <Text>Loading employee data...</Text>
+        )}
+      </View>
+      <View>
+        {/* {tagId && (
           <View style={styles.resultContainer}>
             <Text style={styles.resultText}>Tag ID:</Text>
             <Text style={styles.resultValue}>{tagId}</Text>
           </View>
-        )}
+        )} */}
         <>
-          {isReading ? <Text>Scanning...</Text> : null}
+          {/* {isReading ? <Text>Scanning...</Text> : null} */}
           <Button
             onPress={handleStartScan}
             title={isReading ? "Stop Reading" : "Gatepass Card"}
@@ -112,39 +152,60 @@ const DetailGatepass = () =>{
               <Text style={styles.errorText}>{JSON.stringify(errors)}</Text>
             </View>
           )}
-          <Text>{status.errors ? `Errors: ${JSON.stringify(status.errors)}` : ''}</Text>
+          <Text>
+            {status.errors ? `Errors: ${JSON.stringify(status.errors)}` : ""}
+          </Text>
           {status.errors && (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{`Errors: ${JSON.stringify(status.errors)}`}</Text>
+              <Text style={styles.errorText}>{`Errors: ${JSON.stringify(
+                status.errors
+              )}`}</Text>
             </View>
           )}
         </>
       </View>
-    </View>
+    </SafeAreaView>
   );
-}
+};
 
 export default DetailGatepass;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     // alignItems: "center",
     padding: 20,
     backgroundColor: "#f5f5f5",
     gap: 16,
   },
+  statusBadge: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  statusIndicator: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    marginLeft: 8,
+  },
   employeeCard: {
     backgroundColor: "#ffffff",
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    padding: 16,
+    borderRadius: 2,
+    elevation: 0,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: 120,
   },
   employeeName: {
     fontSize: 18,
@@ -154,7 +215,7 @@ const styles = StyleSheet.create({
   employeeDetail: {
     fontSize: 14,
     color: "#666",
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   employeeInfoRow: {
     flexDirection: "row",
