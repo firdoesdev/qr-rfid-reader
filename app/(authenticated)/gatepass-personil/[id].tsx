@@ -85,7 +85,7 @@ const DetailGatepass = () => {
         <View
           style={[
             styles.statusIndicator,
-            { backgroundColor: status.connected ? "#4CAF50" : "#F44336" },
+            { backgroundColor: status.connected ? "#24810a" : "#f3ea1c" },
           ]}
         />
       </View>

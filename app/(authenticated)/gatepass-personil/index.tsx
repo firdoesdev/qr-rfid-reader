@@ -36,36 +36,31 @@ const ListGatePass = () => {
                 params: { id: employee.id },
               }}
               key={employee.id}
-              style={{ flex: 1, marginBottom: 10 }}
+              style={{ flex: 1, marginBottom: 10  }}
             >
               <View style={styles.employeeCard}>
-                <View
-                  style={styles.headerSection}
-                >
-                  <Text style={styles.employeeName}>{employee.name}</Text>
-                  <Text
-                    style={[
-                      styles.badge,
-                      employee.is_permanent
-                        ? styles.permanentBadge
-                        : styles.temporaryBadge,
-                    ]}
-                  >
-                    {employee.is_permanent ? "Permanent" : "Temporary"}
-                  </Text>
+                <View>
+                  <View style={styles.headerSection}>
+                    <Text style={styles.employeeName}>{employee.name}</Text>
+                    <Text
+                      style={[
+                        styles.badge,
+                        employee.is_permanent
+                          ? styles.permanentBadge
+                          : styles.temporaryBadge,
+                      ]}
+                    >
+                      {employee.is_permanent ? "Permanent" : "Temporary"}
+                    </Text>
+                  </View>
                 </View>
                 <Text style={styles.employeeDetail}>{employee.email}</Text>
                 <View style={styles.employeeInfoRow}>
-                  <Text style={styles.employeeLabel}>Gate Pass:</Text>
-                  <Text style={styles.employeeValue}>
+                  <Text style={styles.employeeDetail}>No Gatepass: </Text>
+                  <Text
+                    style={{ ...styles.employeeValue, fontStyle: "italic" }}
+                  >
                     {employee.gatepass_number}
-                  </Text>
-                </View>
-                <View style={styles.employeeInfoRow}>
-                  <Text style={styles.employeeLabel}>Valid:</Text>
-                  <Text style={styles.employeeValue}>
-                    {employee.valid_start_at}{" "}
-                    {employee.valid_end_at ? `- ` + employee.valid_end_at : ""}
                   </Text>
                 </View>
               </View>
@@ -95,13 +90,12 @@ const styles = StyleSheet.create({
   employeeCard: {
     width: "100%",
     backgroundColor: "#ffffff",
-    padding: 12,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    padding: 16,
+    borderRadius: 2,
+    elevation: 0,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: 120,
   },
   employeeName: {
     fontSize: 18,
