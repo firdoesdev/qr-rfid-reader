@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
-
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 
 export default function QrCamera() {
@@ -27,19 +26,19 @@ export default function QrCamera() {
     );
   }
 
-  
-
   return (
     <View style={styles.container}>
-      <CameraView 
-      barcodeScannerSettings={{
-        barcodeTypes:['qr']
-      }}
-      onBarcodeScanned={({ data }) => {
-        console.log("Barcode scanned:", data);
-        setQrData(data);
-      }}
-      style={styles.camera} facing='back'></CameraView>
+      <CameraView
+        barcodeScannerSettings={{
+          barcodeTypes: ["qr"],
+        }}
+        onBarcodeScanned={({ data }) => {
+          console.log("Barcode scanned:", data);
+          setQrData(data);
+        }}
+        style={styles.camera}
+        facing="back"
+      ></CameraView>
       <View style={styles.buttonContainer}>
         <Text style={styles.title}>QR Code Scanner</Text>
         <Text style={styles.subTitle}>Scanned: {qrData}</Text>
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: '#F5FCFF',
+    backgroundColor: "#F5FCFF",
   },
   permissionContainer: {
     flex: 1,
@@ -82,12 +81,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#505A5B",
+    padding: 20,
   },
   button: {
     backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
-    
   },
   buttonText: {
     color: "#fff",
