@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
@@ -16,7 +16,7 @@ const DetailGatepass = () => {
   const [hasNfc, setHasNFC] = useState(false);
   const [tagId, setTagId] = useState<string | undefined>();
   const { id } = useLocalSearchParams();
-  const { data: employeeData } = useDetailCompanyEmployee({
+  const { data: employeeData, refetch, isLoading } = useDetailCompanyEmployee({
     id: id as string,
     enabled: !!id,
   });
@@ -81,89 +81,92 @@ const DetailGatepass = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <View
-          style={[
-            styles.statusIndicator,
-            { backgroundColor: status.connected ? "#24810a" : "#f3ea1c" },
-          ]}
-        />
-      </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Update Nomor Gatepass Personil</Text>
-      </View>
-      <View>
-        {employeeData ? (
-          <View style={styles.employeeCard}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={styles.employeeName}>
-                  {employeeData.data.name}
-                </Text>
-                {employeeData.data.status ? (
-                  <Check color="#4CAF50" />
-                ) : (
-                  <Ban color="#F44336" />
-                )}
-              </View>
-              <Text style={styles.employeeDetail}>{employeeData.data.nip}</Text>
-            </View>
-
-            {isReading ? (
-              <Text>Scanning...</Text>
-            ) : (
-              <Text style={styles.employeeDetail}>
-                No. Gatepass:{" "}
-                <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-                  {employeeData.data.gatepass_number}
-                </Text>
-              </Text>
-            )}
-          </View>
-        ) : (
-          <Text>Loading employee data...</Text>
-        )}
-      </View>
-      <View>
-        {/* {tagId && (
-          <View style={styles.resultContainer}>
-            <Text style={styles.resultText}>Tag ID:</Text>
-            <Text style={styles.resultValue}>{tagId}</Text>
-          </View>
-        )} */}
-        <>
-          {/* {isReading ? <Text>Scanning...</Text> : null} */}
-          <Button
-            onPress={handleStartScan}
-            title={isReading ? "Stop Reading" : "Gatepass Card"}
+      <ScrollView
+        style={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
+      >
+        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+          <View
+            style={[
+              styles.statusIndicator,
+              { backgroundColor: status.connected ? "#24810a" : "#f3ea1c" },
+            ]}
           />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Update Nomor Gatepass Personil</Text>
+        </View>
+        <View>
+          {employeeData ? (
+            <View style={styles.employeeCard}>
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={styles.employeeName}>
+                    {employeeData.data.name}
+                  </Text>
+                  {employeeData.data.status ? (
+                    <Check color="#4CAF50" />
+                  ) : (
+                    <Ban color="#F44336" />
+                  )}
+                </View>
+                <Text style={styles.employeeDetail}>
+                  {employeeData.data.nip}
+                </Text>
+              </View>
 
-          {errors && (
-            <View>
-              <Text>
-                {hasNfc ? "NFC is supported" : "NFC is not supported"}
-              </Text>
-              <Text style={styles.errorText}>{JSON.stringify(errors)}</Text>
+              {isReading ? (
+                <Text>Scanning...</Text>
+              ) : (
+                <Text style={styles.employeeDetail}>
+                  No. RFID:{" "}
+                  <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+                    {employeeData.data.rfid}
+                  </Text>
+                </Text>
+              )}
             </View>
+          ) : (
+            <Text>Loading employee data...</Text>
           )}
-          <Text>
-            {status.errors ? `Errors: ${JSON.stringify(status.errors)}` : ""}
-          </Text>
-          {status.errors && (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{`Errors: ${JSON.stringify(
-                status.errors
-              )}`}</Text>
-            </View>
-          )}
-        </>
-      </View>
+        </View>
+        <View>
+          <>
+            <Button
+              onPress={handleStartScan}
+              title={isReading ? "Stop Reading" : "Gatepass Card"}
+            />
+
+            {errors && (
+              <View>
+                <Text>
+                  {hasNfc ? "NFC is supported" : "NFC is not supported"}
+                </Text>
+                <Text style={styles.errorText}>{JSON.stringify(errors)}</Text>
+              </View>
+            )}
+            <Text>
+              {status.errors ? `Errors: ${JSON.stringify(status.errors)}` : ""}
+            </Text>
+            {status.errors && (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{`Errors: ${JSON.stringify(
+                  status.errors
+                )}`}</Text>
+              </View>
+            )}
+          </>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -173,8 +176,6 @@ export default DetailGatepass;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     padding: 20,
     backgroundColor: "#f5f5f5",
     gap: 16,

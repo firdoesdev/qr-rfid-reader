@@ -36,7 +36,7 @@ export const useUpdateGatepassNumber = (data: IUpdateGatepassNumber) => {
           ...oldData,
           data: {
             ...oldData.data,
-            gatepass_number: tagId,
+            rfid: tagId,
           },
         };
       }

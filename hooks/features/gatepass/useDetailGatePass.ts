@@ -9,6 +9,7 @@ interface CompanyEmployee {
     activity: string;
     status: string;
     gatepass_number: string;
+    rfid?:string;
     valid_start_at: string;
     valid_end_at: string;
     is_permanent: boolean;
