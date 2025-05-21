@@ -1,4 +1,4 @@
-import { useMqtt } from "@/hooks/useMqtt";
+import { useMqtt } from "@/src/hooks/useMqtt";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface IUpdateGatepassNumber {

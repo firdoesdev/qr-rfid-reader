@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { useLogin } from "@/hooks/features/useLogin";
-import useAuth from "@/hooks/features/useAuth";
+import { HelloWave } from "@/src/components/HelloWave";
+import ParallaxScrollView from "@/src/components/ParallaxScrollView";
+import { ThemedText } from "@/src/components/ThemedText";
+import { ThemedView } from "@/src/components/ThemedView";
+import { useLogin } from "@/src/hooks/features/useLogin";
+import useAuth from "@/src/hooks/features/useAuth";
 import { useRouter } from "expo-router";
 // import { View } from 'react-native-reanimated/lib/typescript/Animated';
 export default function HomeScreen() {

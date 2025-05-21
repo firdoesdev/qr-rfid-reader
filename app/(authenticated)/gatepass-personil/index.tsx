@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import useGatePass from "@/hooks/features/gatepass/useGatePass";
+import useGatePass from "@/src/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
 
 const ListGatePass = () => {

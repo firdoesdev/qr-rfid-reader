@@ -1,8 +1,8 @@
 // hooks/useMqtt.ts
 import { useEffect, useRef, useCallback, useState } from "react";
 import { Client } from "paho-mqtt";
-import { mqttClient } from '@/libs/mqttClient';
-import { APP_ENV } from "@/constants/Configs";
+import { mqttClient } from '@/src/libs/mqttClient';
+import { APP_ENV } from "@/src/constants/Configs";
 
 type MessageHandler = (topic: string, message: string) => void;
 

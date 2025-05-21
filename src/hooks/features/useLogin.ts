@@ -1,4 +1,4 @@
-import axios from '@/libs/axios'
+import axios from '@/src/libs/axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'

@@ -4,8 +4,8 @@ import { Button, RefreshControl, ScrollView, StyleSheet, Text, View } from "reac
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
 import { useLocalSearchParams } from "expo-router";
-import { useDetailCompanyEmployee } from "@/hooks/features/gatepass/useDetailGatePass";
-import { useUpdateGatepassNumber } from "@/hooks/features/gatepass/useUpdateGatepassNumber";
+import { useDetailCompanyEmployee } from "@/src/hooks/features/gatepass/useDetailGatePass";
+import { useUpdateGatepassNumber } from "@/src/hooks/features/gatepass/useUpdateGatepassNumber";
 // import {useMqtt} from '@/hooks/useMqtt';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ban, Check } from "lucide-react-native";
