@@ -15,9 +15,6 @@ const ListGatePass = () => {
   const { employees, loading, error, refresh } = useGatePass();
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>Gate Pass List</Text>
-      </View>
       {loading && <Text>Loading...</Text>}
       {error && <Text>Error: {error}</Text>}
 

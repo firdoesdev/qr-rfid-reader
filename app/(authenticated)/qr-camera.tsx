@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { Colors } from "@/src/constants/Colors";
 
 export default function QrCamera() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -21,7 +22,9 @@ export default function QrCamera() {
         <Text style={styles.message}>
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <TouchableOpacity onPress={requestPermission} style={styles.button}>
+          <Text style={styles.buttonText}>Grant Permission</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -65,13 +68,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#fff",
+    color: "#000",
   },
   subTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#fff",
+    color: "#000",
   },
   message: {
     textAlign: "center",
@@ -81,19 +84,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#505A5B",
+    backgroundColor: "#fff",
     padding: 20,
   },
   button: {
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "bold",
-  },
+       backgroundColor: Colors.light.primary,
+       paddingVertical: 15,
+       paddingHorizontal: 30,
+       borderRadius: 8,
+       marginBottom: 20,
+     },
+     buttonText: {
+       color: "#fff",
+       textAlign: "center",
+     },
   text: {
     fontSize: 14,
     fontWeight: "bold",

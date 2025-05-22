@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
@@ -9,6 +9,7 @@ import { useUpdateGatepassNumber } from "@/src/hooks/features/gatepass/useUpdate
 // import {useMqtt} from '@/hooks/useMqtt';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ban, Check } from "lucide-react-native";
+import { Colors } from "@/src/constants/Colors";
 
 const DetailGatepass = () => {
   const [isReading, setIsReading] = useState(false);
@@ -96,10 +97,8 @@ const DetailGatepass = () => {
             ]}
           />
         </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Update Nomor Gatepass Personil</Text>
-        </View>
-        <View>
+      
+        <View style={{marginVertical: 20}}>
           {employeeData ? (
             <View style={styles.employeeCard}>
               <View>
@@ -141,10 +140,15 @@ const DetailGatepass = () => {
         </View>
         <View>
           <>
-            <Button
+            <TouchableOpacity
+              style={styles.button}
               onPress={handleStartScan}
-              title={isReading ? "Stop Reading" : "Gatepass Card"}
-            />
+              
+            >
+              <Text style={styles.buttonText}>
+                {isReading ? "Stop Reading" : "Scan Gatepass Card"}
+              </Text>
+            </TouchableOpacity>
 
             {errors && (
               <View>
@@ -176,7 +180,8 @@ export default DetailGatepass;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     backgroundColor: "#f5f5f5",
     gap: 16,
   },
@@ -257,17 +262,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#007bff",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+     backgroundColor: Colors.light.primary,
+     paddingVertical: 15,
+     paddingHorizontal: 30,
+     borderRadius: 8,
+     marginBottom: 20,
+   },
+   buttonText: {
+     color: "#fff",
+     textAlign: "center",
+   },
   resultContainer: {
     marginTop: 20,
     alignItems: "center",
@@ -290,4 +294,5 @@ const styles = StyleSheet.create({
     color: "#d32f2f",
     fontSize: 16,
   },
+  
 });

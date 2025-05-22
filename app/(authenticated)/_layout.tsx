@@ -1,15 +1,16 @@
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
-
 import { HapticTab } from "@/src/components/HapticTab";
 import { IconSymbol } from "@/src/components/ui/IconSymbol";
 import TabBarBackground from "@/src/components/ui/TabBarBackground";
 import { Colors } from "@/src/constants/Colors";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
+import useAuth from "@/src/hooks/features/useAuth";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  
 
   return (
     
@@ -39,19 +40,29 @@ export default function TabLayout() {
         />
         <Tabs.Screen
           name="qr-camera"
+          
           options={{
             title: "QR Code",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="qrcode" color={color} />
+              <IconSymbol size={28} name="qr.scanner" color={color} />
             ),
           }}
         />
         <Tabs.Screen
-          name="gatepass"
+          name="gatepass-personil"
           options={{
             title: "Gatepass",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="scanner" color={color} />
+              <IconSymbol size={28} name="card.add" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="account"
+          options={{
+            title: "Account",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="user" color={color} />
             ),
           }}
         />

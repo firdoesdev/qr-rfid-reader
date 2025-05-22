@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TextInput,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,9 @@ import { ThemedView } from "@/src/components/ThemedView";
 import { useLogin } from "@/src/hooks/features/useLogin";
 import useAuth from "@/src/hooks/features/useAuth";
 import { Redirect, useRouter } from "expo-router";
+import { Colors } from "@/src/constants/Colors";
+import { IdCard } from "lucide-react-native";
+import { IconSymbol } from "@/src/components/ui/IconSymbol";
 // import { View } from 'react-native-reanimated/lib/typescript/Animated';
 export default function HomeScreen() {
   const { loginAsync, isLoading, data } = useLogin();
@@ -27,22 +31,8 @@ export default function HomeScreen() {
     refreshAuth,
     isLoading: sessionLoading,
   } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
 
-  const handleLogin = async () => {
-    const credentials = {
-      email,
-      password,
-    };
-    try {
-      await loginAsync(credentials);
-      refreshAuth();
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
+  const router = useRouter();
 
   if (sessionLoading) {
     return (
@@ -52,19 +42,28 @@ export default function HomeScreen() {
     );
   }
 
-
-
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Welcome back!</Text>
-      <Text style={styles.title}>{user?.email}</Text>
-      <Button
-          title="Logout"
-          onPress={async () => {
-            await logout();
-            router.push('/login')
-          }}
-        />
+      <Image
+        source={require("@/assets/images/logo-jiipe.png")}
+        style={{
+          width: 240,
+          height: 240,
+          alignSelf: "center",
+          marginBottom: 20,
+          resizeMode: "contain",
+        }}
+      />
+      <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menu} onPress={() => router.push("/(authenticated)/qr-camera")}>
+          <IconSymbol size={28} name="qr.scanner" color={'white'} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menu} onPress={() => router.push("/(authenticated)/gatepass-personil")}>
+          <IconSymbol size={28} name="card.add" color={'white'} />
+        </TouchableOpacity>
+        
+      </View>
+      
     </SafeAreaView>
   );
 }
@@ -72,7 +71,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "stretch",
     backgroundColor: "#F5FCFF",
     padding: 20,
@@ -82,16 +81,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 10,
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 5,
-    width: "100%",
+
+  menuContainer:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
   },
+  menu:{
+    backgroundColor: Colors.light.primary,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginBottom: 20,
+    flex: 1,
+    marginRight: 10,
+    alignItems: "center",
+  },
+
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: Colors.light.primary,
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 8,
@@ -99,5 +107,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
+    textAlign: "center",
   },
 });
