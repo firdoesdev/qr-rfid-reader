@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import axios from '@/libs/axios';
+import axios from '@/src/libs/axios';
 
 // Define types for company
 interface Company {

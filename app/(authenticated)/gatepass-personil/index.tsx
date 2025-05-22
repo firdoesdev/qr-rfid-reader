@@ -8,16 +8,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import useGatePass from "@/hooks/features/gatepass/useGatePass";
+import useGatePass from "@/src/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
 
 const ListGatePass = () => {
   const { employees, loading, error, refresh } = useGatePass();
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>Gate Pass List</Text>
-      </View>
       {loading && <Text>Loading...</Text>}
       {error && <Text>Error: {error}</Text>}
 
