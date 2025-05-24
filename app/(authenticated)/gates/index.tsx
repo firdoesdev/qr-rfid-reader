@@ -1,78 +1,64 @@
 import React from "react";
 import {
+  ActivityIndicator,
+  Button,
   FlatList,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import useGatePass from "@/src/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
+import { useGates } from "@/src/hooks/features/gates/gates.hook";
 
-const ListGatePass = () => {
-  const { employees, loading, error, refresh } = useGatePass();
+const ListGates = () => {
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGates();
+  console.log("Gates Data:", data);
+
   return (
-    <FlatList 
+    <FlatList
       refreshControl={
-        <RefreshControl refreshing={loading} onRefresh={refresh} />
+        <RefreshControl refreshing={isLoading} onRefresh={refetch} />
       }
-      data={employees}
-      renderItem={({item}) => (
-         <Link
-              href={{
-                pathname: "/(authenticated)/gatepass-personil/[id]",
-                params: { id: item.id },
-              }}
-              key={item.id}
-              style={{ flex: 1, marginBottom: 10  }}
-            >
-              <View style={styles.employeeCard}>
-                <View>
-                  <View style={styles.headerSection}>
-                    <Text style={styles.employeeName}>{item.name}</Text>
-                    <Text
-                      style={[
-                        styles.badge,
-                        item.is_permanent
-                          ? styles.permanentBadge
-                          : styles.temporaryBadge,
-                      ]}
-                    >
-                      {item.is_permanent ? "Permanent" : "Temporary"}
-                    </Text>
-                  </View>
-                </View>
-                <Text style={styles.employeeDetail}>{item.email}</Text>
-                <View style={styles.employeeInfoRow}>
-                  <Text style={styles.employeeDetail}>No Gatepass: </Text>
-                  <Text
-                    style={{ ...styles.employeeValue, fontStyle: "italic" }}
-                  >
-                    {item.gatepass_number}
-                  </Text>
-                </View>
-              </View>
-            </Link>
-      )
-       
+      data={data}
+      onEndReached={() => {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      renderItem={({ item }) => (
+        <View style={styles.employeeCard}>
+          <View>
+            <Text style={styles.employeeName}>{item.identity_gate}</Text>
+            <Text style={{fontSize:12}}>{item.name}</Text>
+          </View>
+        </View>
+      )}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={
+        isFetchingNextPage ? <ActivityIndicator size="small" /> : null
       }
+      showsVerticalScrollIndicator={false}
     />
- 
   );
 };
 
-export default ListGatePass;
+export default ListGates;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 12,
-    backgroundColor: "#f5f5f5",
-    gap: 16,
-  },
   headerSection: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -86,12 +72,11 @@ const styles = StyleSheet.create({
     elevation: 0,
     flexDirection: "column",
     justifyContent: "space-between",
-    height: 120,
+    height: 150,
   },
   employeeName: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   employeeDetail: {
     fontSize: 14,
