@@ -40,10 +40,6 @@ export default function AppProvider({ children }: PropsWithChildren) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         {children}
-        {/* <Stack>
-          <Stack.Screen name="login"/>
-          <Stack.Screen name="+not-found" />
-        </Stack> */}
         <StatusBar style="dark" />
       </ThemeProvider>
     </QueryClientProvider>

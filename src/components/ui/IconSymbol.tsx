@@ -1,6 +1,6 @@
 // This file is a fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { SymbolWeight } from 'expo-symbols';
 import React from 'react';
 import { OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
@@ -13,14 +13,15 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
-  'card.add':'add-card',
-  'qr.scanner':'qr-code-scanner',
-  'chevron.left':'chevron-left',
-  'user':'person',
-} as Partial<
+  'card.add': 'card-account-details-outline',
+  'qr.scanner': 'qrcode',
+  'user': 'account',
+  'boom.gate': 'boom-gate',
+  
+} as unknown as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
-    React.ComponentProps<typeof MaterialIcons>['name']
+    React.ComponentProps<typeof MaterialCommunityIcons>['name']
   >
 >;
 
@@ -43,5 +44,5 @@ export function IconSymbol({
   style?: StyleProp<ViewStyle>;
   weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  return <MaterialCommunityIcons color={color} size={size} name={MAPPING[name]} style={style} />;
 }

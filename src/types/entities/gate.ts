@@ -8,4 +8,5 @@ export type TGate = {
     lanes?: TLane[],
     area?: TArea
     identity_gate:string
+    gate_type:'Main' | 'Buffer Zone'
 }

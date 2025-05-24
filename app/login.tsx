@@ -41,6 +41,13 @@ export default function HomeScreen() {
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      
+      router.push("/(authenticated)");
+    }
+  }, [isAuthenticated]);
+
   return (
     <SafeAreaView style={styles.container}>
       

@@ -1,22 +1,16 @@
 import React from "react";
 import {
-  ActivityIndicator,
-  Button,
-  FlatList,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+  ActivityIndicator, FlatList,
+  RefreshControl, StyleSheet,
+  Text, View
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-import useGatePass from "@/src/hooks/features/gatepass/useGatePass";
 import { Link } from "expo-router";
 import { useGates } from "@/src/hooks/features/gates/gates.hook";
+import { IconSymbol } from "@/src/components/ui/IconSymbol";
 
 const ListGates = () => {
+  
   const {
     data,
     isLoading,
@@ -26,7 +20,6 @@ const ListGates = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useGates();
-  console.log("Gates Data:", data);
 
   return (
     <FlatList
@@ -40,12 +33,30 @@ const ListGates = () => {
         }
       }}
       renderItem={({ item }) => (
-        <View style={styles.employeeCard}>
-          <View>
-            <Text style={styles.employeeName}>{item.identity_gate}</Text>
-            <Text style={{fontSize:12}}>{item.name}</Text>
+        <Link
+          href={{
+            pathname: "/(authenticated)/gates/lanes",
+            params: {
+              gateId: item.identity_gate,
+            },
+          }}
+        >
+          <View style={styles.gateCard} key={item.id}>
+            <View style={styles.iconContainer}>
+              <IconSymbol size={54} name="boom.gate" color="#000" />
+            </View>
+            <View style={styles.contentContainer}>
+              <Text style={styles.identityText}>
+                {item.identity_gate}
+              </Text>
+              <Text style={styles.titleText}>{item.name}</Text>
+              <Text style={styles.subtitleText}>
+                {item.gate_type === "Buffer Zone" ? item.gate_type + " " : null}
+                {item.area?.description}
+              </Text>
+            </View>
           </View>
-        </View>
+        </Link>
       )}
       onEndReachedThreshold={0.5}
       ListFooterComponent={
@@ -59,102 +70,34 @@ const ListGates = () => {
 export default ListGates;
 
 const styles = StyleSheet.create({
-  headerSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  employeeCard: {
+  gateCard: {
     width: "100%",
     backgroundColor: "#ffffff",
-    padding: 16,
+    padding: 14,
     borderRadius: 2,
     elevation: 0,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    height: 150,
-  },
-  employeeName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  employeeDetail: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 10,
-  },
-  employeeInfoRow: {
     flexDirection: "row",
-    marginBottom: 5,
+    height: 120,
+    
   },
-  employeeLabel: {
-    fontSize: 14,
-    fontWeight: "bold",
-    width: 80,
-  },
-  employeeValue: {
-    fontSize: 14,
+  iconContainer: {
     flex: 1,
-  },
-  badgeContainer: {
-    flexDirection: "row",
-    marginTop: 10,
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-start",
   },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
+  contentContainer: {
+    flex: 2,
+    justifyContent: "center",
+  },
+  identityText: {
     fontSize: 12,
-    fontWeight: "bold",
-    overflow: "hidden",
+    opacity: 0.3,
   },
-  permanentBadge: {
-    backgroundColor: "#e0f7fa",
-    color: "#0277bd",
-  },
-  temporaryBadge: {
-    backgroundColor: "#fff8e1",
-    color: "#ff8f00",
-  },
-  title: {
+  titleText: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
-  button: {
-    backgroundColor: "#007bff",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  resultContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  resultText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  resultValue: {
-    fontSize: 16,
-  },
-  errorContainer: {
-    marginTop: 20,
-    backgroundColor: "#ffe0b2",
-    padding: 10,
-    borderRadius: 5,
-  },
-  errorText: {
-    color: "#d32f2f",
-    fontSize: 16,
+  subtitleText: {
+    fontSize: 14,
+    fontStyle: "italic",
   },
 });

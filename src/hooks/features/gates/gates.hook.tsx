@@ -11,7 +11,7 @@ const GATES_QUERY_KEY = 'gate-list'
 export const useGates = () => {
    const [params, setParams] = useState<TGatesFilterParams>({
     page: 1,
-    per_page:5
+    per_page:10
    });
 
   const gatesQuery = useInfiniteQuery({

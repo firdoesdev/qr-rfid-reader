@@ -5,32 +5,18 @@ import { Stack } from "expo-router";
 import "react-native-reanimated";
 
 export default function GateLayout() {
-  
-
   return (
-    <Stack
-      initialRouteName="index"
-      screenOptions={{
-        headerShown: true,
-        headerStyle: {
-          backgroundColor: "#f4511e",
-        },
-        
-      }}
-    >
-      <Stack.Screen
-        name="index"
-        options={{
-          headerTitle: "Gatepass Personil",
-          
+    <>
+      <Stack
+        screenOptions={{
+          headerShown: true,
+          headerTitle: "Gate",
+          headerStyle: {
+            backgroundColor: "#f4511e",
+          },
         }}
       />
-      <Stack.Screen
-        name="[id]"
-        options={{
-          headerTitle: "Update Gatepass RFID",
-        }}
-      />
-    </Stack>
+       
+    </>
   );
 }
