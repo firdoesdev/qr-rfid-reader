@@ -37,7 +37,8 @@ const ListGates = () => {
           href={{
             pathname: "/(authenticated)/gates/lanes",
             params: {
-              gateId: item.identity_gate,
+              gateId: item.id,
+              identity_gate: item.identity_gate,
             },
           }}
         >

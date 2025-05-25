@@ -10,7 +10,7 @@ import { IconSymbol } from "@/src/components/ui/IconSymbol";
 import { useLanesByGate } from "@/src/hooks/features/lanes/lanes-by-gate.hook";
 
 const ListLineByGate = () => {
-  const { gateId } = useLocalSearchParams();
+  const { gateId, identity_gate } = useLocalSearchParams();
   const {
     data,
     isLoading,
@@ -21,7 +21,7 @@ const ListLineByGate = () => {
     isFetchingNextPage,
   } = useLanesByGate(gateId as string);
 
-  console.log("Data from ListLineByGate:", data);
+  
 
   if (isLoading) {
     return (
@@ -67,7 +67,9 @@ const ListLineByGate = () => {
             pathname: "/(authenticated)/gates/camera",
             params: {
               gateId: gateId as string,
-              laneId: item.lane_code
+              laneId: item.id,
+              lane_code: item.lane_code,
+              identity_gate: identity_gate as string,
             },
           }} >
             <View style={styles.gateCard} key={item.id}>

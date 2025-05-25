@@ -9,9 +9,9 @@ export default function QrCamera() {
   const [permission, requestPermission] = useCameraPermissions();
   const [qrData, setQrData] = useState<string | null>(null);
 
-  const { gateId, laneId } = useLocalSearchParams();
+  const { gateId, laneId, lane_code, identity_gate } = useLocalSearchParams();
 
-
+  console.log({ gateId, laneId, lane_code, identity_gate });
 
   if (!permission) {
     return (
@@ -25,7 +25,7 @@ export default function QrCamera() {
     return (
       <View style={styles.permissionContainer}>
         <Text style={styles.message}>
-          We need your permission to show the camera {gateId} & {laneId}
+          We need your permission to show the camera
         </Text>
         <TouchableOpacity onPress={requestPermission} style={styles.button}>
           <Text style={styles.buttonText}>Grant Permission</Text>
@@ -93,16 +93,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   button: {
-       backgroundColor: Colors.light.primary,
-       paddingVertical: 15,
-       paddingHorizontal: 30,
-       borderRadius: 8,
-       marginBottom: 20,
-     },
-     buttonText: {
-       color: "#fff",
-       textAlign: "center",
-     },
+    backgroundColor: Colors.light.primary,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+  },
   text: {
     fontSize: 14,
     fontWeight: "bold",

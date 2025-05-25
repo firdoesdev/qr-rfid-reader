@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -21,8 +21,7 @@ import { useRouter } from "expo-router";
 import { Colors } from "@/src/constants/Colors";
 // import { View } from 'react-native-reanimated/lib/typescript/Animated';
 export default function HomeScreen() {
-  const { loginAsync, isLoading, data } = useLogin();
-  const { isAuthenticated, user, logout, refreshAuth } = useAuth();
+  const { login, isLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -33,32 +32,22 @@ export default function HomeScreen() {
       password,
     };
     try {
-      await loginAsync(credentials);
-      refreshAuth();
-      router.push("/(authenticated)");
+      await login(credentials);
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      
-      router.push("/(authenticated)");
-    }
-  }, [isAuthenticated]);
-
   return (
     <SafeAreaView style={styles.container}>
-      
       <Image
-        source={require('@/assets/images/logo-jiipe.png')}
+        source={require("@/assets/images/logo-jiipe.png")}
         style={{
           width: 240,
           height: 240,
-          alignSelf: 'center',
+          alignSelf: "center",
           marginBottom: 20,
-          resizeMode: 'contain'
+          resizeMode: "contain",
         }}
       />
       <Text>Email:</Text>
@@ -77,9 +66,15 @@ export default function HomeScreen() {
         onChangeText={setPassword}
       />
 
-       <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={isLoading}>
-          <Text style={styles.buttonText}>{isLoading ? "Loading..." : "Masuk"}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleLogin}
+        style={styles.button}
+        disabled={isLoading}
+      >
+        <Text style={styles.buttonText}>
+          {isLoading ? "Loading..." : "Masuk"}
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -112,7 +107,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     borderRadius: 8,
     marginBottom: 20,
-    
   },
   buttonText: {
     color: "#fff",
