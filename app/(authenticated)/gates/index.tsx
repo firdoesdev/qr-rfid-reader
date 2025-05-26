@@ -22,6 +22,7 @@ const ListGates = () => {
   } = useGates();
 
   return (
+    <View style={styles.container}>
     <FlatList
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={refetch} />
@@ -65,12 +66,14 @@ const ListGates = () => {
       }
       showsVerticalScrollIndicator={false}
     />
+    </View>
   );
 };
 
 export default ListGates;
 
 const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#ffffff" },
   gateCard: {
     width: "100%",
     backgroundColor: "#ffffff",
