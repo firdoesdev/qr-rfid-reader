@@ -70,6 +70,16 @@ export default function TabLayout() {
         }}
       />
 
+        <Tabs.Screen
+        name="tenant"
+        options={{
+          title: "Tenant Verification",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="user" color={color} />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="account"
         options={{

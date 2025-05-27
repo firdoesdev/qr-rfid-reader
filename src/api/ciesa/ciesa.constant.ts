@@ -1,0 +1,1 @@
+export const CIESA_DOCS_URL = "integration/ceisa";

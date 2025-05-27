@@ -26,6 +26,7 @@ interface Company {
   id: string;
   name: string;
   type: string;
+  npwp: string;
 }
 
 interface User {

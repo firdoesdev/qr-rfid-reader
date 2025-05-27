@@ -1,0 +1,1 @@
+export const VERIFICATION_TENANT_URL = "gate-activities/verification-delivery";
