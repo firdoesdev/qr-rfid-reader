@@ -1,0 +1,1 @@
+export const LANE_LIST_BY_GATE_URL = "/gates/lane";

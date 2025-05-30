@@ -1,8 +1,8 @@
 import axios from "@/src/libs/axios";
 import { TResponseData } from "@/src/types/commons/response";
 import { TUser } from "@/src/types/entities/user";
-import { TLoginRequest } from "./login.request";
-import { TLoginResponse } from "./login.response";
+import { TLoginRequest } from "../login/login.request";
+import { TLoginResponse } from "../login/login.response";
 
 const AUTH_LOGIN_URL = "/auth/login";
 

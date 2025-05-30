@@ -1,10 +1,22 @@
-import AppProvider from "@/src/contexts/app.provider";
-import { Slot } from "expo-router";
+import AppProvider from "@/src/contexts/app.context";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <AppProvider>
-      <Slot />
-    </AppProvider>
+      <AppProvider>
+        <Stack screenOptions={{
+          headerShown: false,
+        }}>
+          <Stack.Screen
+            name="(authenticated)"
+            options={{ headerShown: false, animation:'none' }}
+          />
+          <Stack.Screen
+            name="login"
+            options={{ headerShown: false , animation: "none"}}
+          />
+        </Stack>
+      </AppProvider>
+    
   );
 }

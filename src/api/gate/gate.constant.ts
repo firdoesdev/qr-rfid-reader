@@ -1,0 +1,1 @@
+export const GATE_LIST_URL = "/gates/list/dropdown";

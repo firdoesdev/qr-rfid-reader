@@ -9,7 +9,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { HelloWave } from "@/src/components/HelloWave";
 import ParallaxScrollView from "@/src/components/ParallaxScrollView";
@@ -21,26 +21,10 @@ import { Redirect, useRouter } from "expo-router";
 import { Colors } from "@/src/constants/Colors";
 import { IdCard } from "lucide-react-native";
 import { IconSymbol } from "@/src/components/ui/IconSymbol";
-// import { View } from 'react-native-reanimated/lib/typescript/Animated';
+
 export default function HomeScreen() {
-  const { loginAsync, isLoading, data } = useLogin();
-  const {
-    isAuthenticated,
-    user,
-    logout,
-    refreshAuth,
-    isLoading: sessionLoading,
-  } = useAuth();
-
   const router = useRouter();
-
-  if (sessionLoading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
+  const authState = useAuth();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,12 +38,9 @@ export default function HomeScreen() {
           resizeMode: "contain",
         }}
       />
-     
+
       <TouchableOpacity
-        onPress={async () => {
-          await logout();
-          router.push("/login");
-        }}
+        onPress={async () => await authState.logout()}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Logout</Text>
@@ -82,12 +63,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 
-  menuContainer:{
+  menuContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
   },
-  menu:{
+  menu: {
     backgroundColor: Colors.light.primary,
     paddingVertical: 15,
     paddingHorizontal: 30,

@@ -23,24 +23,8 @@ import { IdCard } from "lucide-react-native";
 import { IconSymbol } from "@/src/components/ui/IconSymbol";
 // import { View } from 'react-native-reanimated/lib/typescript/Animated';
 export default function HomeScreen() {
-  const { loginAsync, isLoading, data } = useLogin();
-  const {
-    isAuthenticated,
-    user,
-    logout,
-    refreshAuth,
-    isLoading: sessionLoading,
-  } = useAuth();
-
   const router = useRouter();
 
-  if (sessionLoading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView style={styles.container}>

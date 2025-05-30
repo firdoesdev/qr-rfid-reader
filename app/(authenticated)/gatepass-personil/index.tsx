@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  FlatList,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -14,59 +15,52 @@ import { Link } from "expo-router";
 const ListGatePass = () => {
   const { employees, loading, error, refresh } = useGatePass();
   return (
-    <SafeAreaView style={styles.container}>
-      {loading && <Text>Loading...</Text>}
-      {error && <Text>Error: {error}</Text>}
-
-      {employees.length > 0 && (
-        <ScrollView
-          style={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={refresh} />
-          }
-        >
-          {employees.map((employee) => (
-            <Link
+    <FlatList 
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={refresh} />
+      }
+      data={employees}
+      renderItem={({item}) => (
+         <Link
               href={{
                 pathname: "/(authenticated)/gatepass-personil/[id]",
-                params: { id: employee.id },
+                params: { id: item.id },
               }}
-              key={employee.id}
+              key={item.id}
               style={{ flex: 1, marginBottom: 10  }}
             >
               <View style={styles.employeeCard}>
                 <View>
                   <View style={styles.headerSection}>
-                    <Text style={styles.employeeName}>{employee.name}</Text>
+                    <Text style={styles.employeeName}>{item.name}</Text>
                     <Text
                       style={[
                         styles.badge,
-                        employee.is_permanent
+                        item.is_permanent
                           ? styles.permanentBadge
                           : styles.temporaryBadge,
                       ]}
                     >
-                      {employee.is_permanent ? "Permanent" : "Temporary"}
+                      {item.is_permanent ? "Permanent" : "Temporary"}
                     </Text>
                   </View>
                 </View>
-                <Text style={styles.employeeDetail}>{employee.email}</Text>
+                <Text style={styles.employeeDetail}>{item.email}</Text>
                 <View style={styles.employeeInfoRow}>
                   <Text style={styles.employeeDetail}>No Gatepass: </Text>
                   <Text
                     style={{ ...styles.employeeValue, fontStyle: "italic" }}
                   >
-                    {employee.gatepass_number}
+                    {item.gatepass_number}
                   </Text>
                 </View>
               </View>
             </Link>
-          ))}
-        </ScrollView>
-      )}
-      {employees.length === 0 && !loading && <Text>No employees found.</Text>}
-    </SafeAreaView>
+      )
+       
+      }
+    />
+ 
   );
 };
 
